@@ -6,6 +6,9 @@ import { fetchUsersAction } from '../store/actions/UsersActions.ts';
 import Title from '../components/ui/Title.tsx';
 import SearchInput from '../components/SearchInput.tsx';
 import UsersList from '../components/UsersList.tsx';
+import Spinner from '../components/ui/Spinner.tsx';
+import ErrorMessage from '../components/ui/ErrorMessage.tsx';
+import Message from '../components/ui/Message.tsx';
 
 const Users: React.FC = () => {
   const { data, fetching, error } = usePage(fetchUsersAction, 'users');
@@ -45,8 +48,19 @@ const Users: React.FC = () => {
         />
       </div>
       <div className="my-4">
-        {fetching && <p>Loading...</p>}
-        {!fetching && error ? <p>Error..</p> : <UsersList users={displayedUsers} />}
+        {fetching && <Spinner />}
+        {!fetching && error && <ErrorMessage text={error} />}
+        {!fetching &&
+          !error &&
+          !debouncedSearchValue &&
+          !displayedUsers.length && <Message text={'No data'} />}
+        {!fetching &&
+          !error &&
+          debouncedSearchValue &&
+          !displayedUsers.length && <Message text={'No search results'} />}
+        {!fetching && !error && displayedUsers.length > 0 && (
+          <UsersList users={displayedUsers} />
+        )}
       </div>
     </>
   );

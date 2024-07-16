@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout.tsx';
 import Users from './pages/Users.tsx';
+import NotFound from './components/NotFound.tsx';
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <Route path={'/'} element={<Layout />}>
         <Route path={'/'} element={<Users />} />
         <Route path={'users'} element={<Users />} />
-        <Route path={'*'} element={<p>Not found</p>} />
+        <Route path={'*'} element={<NotFound/>} />
       </Route>
     </Routes>
   );
